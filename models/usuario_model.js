@@ -17,7 +17,7 @@ const usuarioSchema = new mongoose.Schema({
     password: {
         type: String,
         required: "La contraseña es obligatoria",
-        match:[validate_pass, "La contraseña debe tener mínimo 8 caracteres, "]
+        match:[validate_pass, "La contraseña no es segura "]
     },
     estado: {
         type: Boolean,

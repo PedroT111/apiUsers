@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require ("mongoose");
 const app = express();
 const usuarios = require("./routes/usuarios");
+const cursos = require("./routes/cursos")
 
 
 //Conexiòn a la base de datos
@@ -14,6 +15,7 @@ app.use(express.urlencoded({extended: true}));
 
 //Rutas
 app.use("/api/usuarios", usuarios);
+app.use("/api/cursos", cursos);
 
 
 const port = process.env.PORT || 3000;
