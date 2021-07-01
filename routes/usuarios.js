@@ -4,16 +4,15 @@ const router = express.Router();
 
 
 
+//Mostrar usuarios activos
 router.get('/', async (req, res) => {
    try{
+        const usuariosActivos = await usuarioModel.find({"estado": true});
 
-
-    const usuario = await usuarioModel.find({});
-   } 
-    
-    
-    
-
+        res.json({
+            usuariosActivos
+        });
+   }
     catch(err){  
         res.status(400).json({Error: err});
 
@@ -31,15 +30,18 @@ router.post("/", async (req, res) => {
         nombre : req.body.nombre,
         email: req.body.email,
         password: req.body.password
-    })
-
-    await usuario.save();
-
+    })   
+    await usuario.save(function(err){
+        if(err){
+            res.status(404).json({error: err.message})
+        }
+    });
     res.json({
         user: usuario
+            
     })
-
-   } catch(err){
+    }
+    catch(err){
         res.status(400).json({Error: err})
    }
   
