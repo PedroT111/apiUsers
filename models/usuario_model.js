@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const validate_pass= [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}[^'\s]/];
+
 
 const usuarioSchema = new mongoose.Schema({
     nombre:{
@@ -17,7 +17,7 @@ const usuarioSchema = new mongoose.Schema({
     password: {
         type: String,
         required: "La contraseña es obligatoria",
-        match:[validate_pass, "La contraseña no es segura "]
+        
     },
     estado: {
         type: Boolean,
