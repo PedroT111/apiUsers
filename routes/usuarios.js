@@ -14,8 +14,8 @@ router.get('/', async (req, res) => {
     
     
 
-    catch(e){  
-        res.status(400).send({"Error": e.message});
+    catch(err){  
+        res.status(400).json({Error: err});
 
     }
     
@@ -40,9 +40,7 @@ router.post("/", async (req, res) => {
     })
 
    } catch(err){
-        res.json({
-            err: Error
-        })
+        res.status(400).json({Error: err})
    }
   
 })
@@ -65,10 +63,28 @@ router.put("/:id", async (req, res) => {
 
 
     }
-    catch(e){
+    catch(err){
+        res.status(400).json({Error: err});
+    }
+});
+
+//Desactivar usuario
+router.delete("/:id", async (req, res) => {
+    try{
+        const id = req.params.id;
+        const deleteUsuario = await usuarioModel.findOneAndUpdate(id,{
+            $set: {
+                estado: false
+            }
+        },{new: true})
         res.json({
-            err: Error
+            user: deleteUsuario
         })
+
+    }
+    catch(err){
+        res.status(400).json({Error : err});          
+        
     }
 })
   
