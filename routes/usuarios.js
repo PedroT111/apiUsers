@@ -26,32 +26,30 @@ router.get('/', async (req, res) => {
 //Crear usuario
 router.post("/", async (req, res) => {
    try{
+       let email = req.body.email;
     const usuario = new usuarioModel({
         nombre : req.body.nombre,
-        email: req.body.email,
+        email: email,
         password: req.body.password
     });
-
+    console.log("G")
     //Validar que no haya dos usuarios con el mismo email
-    /*
-    console.log("Error1")
-    const usuarioExistente = await usuarioModel.findOne({email: body.email});
-    console.log("Error2")
-    if(usuarioExistente){
-        res.status(400).json({msg: "El email ya está asociado a un usuario activo"})
-    }
-    console.log("Error3")*/
-         
-    await usuario.save(function(err){
-        if(err){
-            res.status(404).json({error: err.message})
-        }
-    });
-    res.json({
-        nombre: usuario.nombre,
-        email: usuario.email
-            
-    })
+    const user = await usuarioModel.findOne({email: email});
+    if(user){res.status(404).json({error: "Ya existe una cuenta asociada a ese email"})}
+    else{
+        await usuario.save(function(err){
+            if(err){
+                res.status(404).json({error: err.message})
+            }
+        });
+        res.json({
+            nombre: usuario.nombre,
+            email: usuario.email
+                
+        })
+
+    }     
+    
     }
     catch(err){
         res.status(400).json({Error: err})
