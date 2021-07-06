@@ -1,6 +1,9 @@
 const express = require ("express");
 const usuarioModel= require("../models/usuario_model");
 const router = express.Router();
+const bcrypt = require("bcrypt");
+
+
 
 
 
@@ -27,28 +30,26 @@ router.get('/', async (req, res) => {
 router.post("/", async (req, res) => {
    try{
        let email = req.body.email;
-    const usuario = new usuarioModel({
+        const usuario = new usuarioModel({
         nombre : req.body.nombre,
         email: email,
-        password: req.body.password
+        password: bcrypt.hashSync(req.body.password, 10)
     });
-    console.log("G")
+
     //Validar que no haya dos usuarios con el mismo email
     const user = await usuarioModel.findOne({email: email});
     if(user){res.status(404).json({error: "Ya existe una cuenta asociada a ese email"})}
-    else{
-        await usuario.save(function(err){
-            if(err){
-                res.status(404).json({error: err.message})
-            }
-        });
-        res.json({
-            nombre: usuario.nombre,
-            email: usuario.email
-                
-        })
 
-    }     
+     await usuario.save(function(err){
+         if(err){
+             res.status(404).json({error: err.message})
+        }
+    });
+    res.json({
+        nombre: usuario.nombre,
+        email: usuario.email
+                
+    })   
     
     }
     catch(err){
