@@ -1,0 +1,11 @@
+{
+    "nombre": "API Rest Usuarios-Cursos",
+    "dbConfig": {
+        "HOST": "mongodb://localhost:27017/prueba"
+
+    },
+    "tokenConfig": {
+        "SEED": "secret",
+        "expiration": "1h"
+    }
+}

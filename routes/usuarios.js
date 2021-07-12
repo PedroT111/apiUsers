@@ -2,13 +2,12 @@ const express = require ("express");
 const usuarioModel= require("../models/usuario_model");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-
-
+const authToken = require("../middlewares/authToken")
 
 
 
 //Mostrar usuarios activos
-router.get('/', async (req, res) => {
+router.get('/', authToken, async (req, res) => {
    try{
         const usuariosActivos = await usuarioModel.find({"estado": true}).select({nombre:1, email:1});
 
@@ -59,7 +58,7 @@ router.post("/", async (req, res) => {
 })
 
 //Modificar usuario
-router.put("/:id", async (req, res) => {
+router.put("/:id", authToken, async (req, res) => {
     try{
         const id = req.params.id;
         const updateUsuario = await usuarioModel.findOneAndUpdate(id, {
@@ -83,7 +82,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //Desactivar usuario
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authToken, async (req, res) => {
     try{
         const id = req.params.id;
         const deleteUsuario = await usuarioModel.findOneAndUpdate(id,{

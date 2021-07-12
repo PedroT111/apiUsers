@@ -1,13 +1,14 @@
 const express = require ("express");
 const cursoModel= require("../models/curso_model");
 const router = express.Router();
+const authToken = require("../middlewares/authToken");
 
 
 
 //Peticiones
 
 //Listado de cursos activos
-router.get("/", async (req,res) => {
+router.get("/", authToken, async (req,res) => {
     try{
         const cursosActivos = await cursoModel.find({estado: true});
         res.json(cursosActivos);
@@ -19,7 +20,7 @@ router.get("/", async (req,res) => {
 
 
 //Crea curso
-router.post("/", async (req,res) => {
+router.post("/", authToken, async (req,res) => {
     try{
         const curso = new cursoModel({
             titulo: req.body.titulo,
@@ -37,7 +38,7 @@ router.post("/", async (req,res) => {
     
 });
 //Editar curso
-router.put("/:id", async (req, res) => {
+router.put("/:id", authToken, async (req, res) => {
     try{
         const id = req.params.id
         const updateCurso = await cursoModel.findOneAndUpdate(id,{
@@ -56,7 +57,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //Cambiar estado del curso
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authToken, async (req, res) => {
     try{
         const id= req.params.id;
         const deleteCurso = await cursoModel.findOneAndUpdate(id,{

@@ -4,10 +4,11 @@ const app = express();
 const usuarios = require("./routes/usuarios");
 const cursos = require("./routes/cursos")
 const auth = require("./routes/auth");
+const config= require("config");
 
 
 //Conexiòn a la base de datos
-mongoose.connect("mongodb://localhost:27017/prueba", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+mongoose.connect(config.get("dbConfig.HOST"), {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
     .then(() => {console.log("Conectado a la bd")})
     .catch((err) => console.log("No se pudo conectar a la bd",err))
 
